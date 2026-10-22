@@ -1,27 +1,30 @@
+# Weather Data ETL Pipeline 🌦️
 
-services:
-  postgres:
-    image: postgres:16
-    container_name: weather_postgres
-    restart: unless-stopped
+Built a simple ETL pipeline using Python to fetch real weather data from the Open-Meteo API, transform and validate it, and store it in PostgreSQL.
 
-    environment:
-      POSTGRES_DB: weather_db
-      POSTGRES_USER: weather_user
-      POSTGRES_PASSWORD: local_dev_password
+### Tech Stack
+- Python
+- PostgreSQL
+- Docker & Docker Compose
+- Pandas-free data processing with Python
+- Pytest
 
-    ports:
-      - "5433:5432"
+### What it does
+- Fetches weather data for New Delhi from Open-Meteo.
+- Validates and transforms temperature, humidity, and wind speed.
+- Stores raw API responses and cleaned observations in PostgreSQL.
+- Includes unit tests to check data validation.
 
-    volumes:
-      - weather_data:/var/lib/postgresql/data
-      - ./sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+### Run Locally
+```bash
+pip install -r requirements.txt
+docker compose up -d
+python -m src.main
+python -m pytest -v
+```
 
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U weather_user -d weather_db"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+Built as a hands-on project to learn API ingestion, ETL workflows, PostgreSQL, Docker, and data quality testing.
 
-volumes:
-  weather_data:
+**Data source:** [Open-Meteo](https://open-meteo.com/)
+
+**GitHub:** [3-vaibhav](https://github.com/3-vaibhav)
